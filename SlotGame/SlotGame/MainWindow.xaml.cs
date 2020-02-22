@@ -38,6 +38,7 @@ namespace SlotGame
             imageWheel1.Source = new BitmapImage(new Uri("heart.png", UriKind.RelativeOrAbsolute));
             imageWheel2.Source = new BitmapImage(new Uri("heart.png", UriKind.RelativeOrAbsolute));
             imageWheel3.Source = new BitmapImage(new Uri("heart.png", UriKind.RelativeOrAbsolute));
+            buttonPlay.Visibility = Visibility.Collapsed;
 
 
         }
@@ -46,6 +47,10 @@ namespace SlotGame
         {
             playerDollars += 10;
             textBlockDollars.Text = $"You have ${playerDollars}.";
+            if(playerDollars > 0)
+            {
+                buttonPlay.Visibility = Visibility.Visible;
+            }
 
 
         }
@@ -54,6 +59,9 @@ namespace SlotGame
         {
             if (playerDollars > 0)
             {
+                wheel1Clicked = false;
+                wheel2Clicked = false;
+                wheel3Clicked = false;
                 playerDollars -= 1;
                 textBlockDollars.Text = $"You have ${playerDollars}.";
                 wheel1 = rand.Next(1, 7);
@@ -64,23 +72,25 @@ namespace SlotGame
                 if (wheel2Clicked == false) { spin(wheel2, imageWheel2); }
                 if (wheel3Clicked == false) { spin(wheel3, imageWheel3); }
                 imageWinLose.Source = new BitmapImage(new Uri("winGame.png", UriKind.RelativeOrAbsolute));
+                Calculate_Win(wheel1, wheel2, wheel3);
             }
             else
             {
                 imageWheel1.Opacity = 0.1f;
                 imageWheel2.Opacity = 0.1f;
                 imageWheel3.Opacity = 0.1f;
+                buttonPlay.Visibility = Visibility.Collapsed;
             }
         }
         public void spin(int wheel, Image imageBox)
         {
             imageBox.Opacity = 1f;
-            if (wheel == 1) { imageBox.Source = new BitmapImage(new Uri("lose.png", UriKind.RelativeOrAbsolute)); }
-            else if (wheel == 2) {imageBox.Source = new BitmapImage(new Uri("spade.png", UriKind.RelativeOrAbsolute)); }
-            else if (wheel == 3) { imageBox.Source = new BitmapImage(new Uri("club.png", UriKind.RelativeOrAbsolute)); }
-            else if (wheel == 4) { imageBox.Source = new BitmapImage(new Uri("heart.png", UriKind.RelativeOrAbsolute)); }
-            else if (wheel == 5) { imageBox.Source = new BitmapImage(new Uri("diamond.png", UriKind.RelativeOrAbsolute)); }
-            else imageBox.Source = new BitmapImage(new Uri("win.png", UriKind.RelativeOrAbsolute));
+            if (wheel == 1) { imageBox.Source = new BitmapImage(new Uri("Images/lose.png", UriKind.RelativeOrAbsolute)); }
+            else if (wheel == 2) {imageBox.Source = new BitmapImage(new Uri("Images/spade.png", UriKind.RelativeOrAbsolute)); }
+            else if (wheel == 3) { imageBox.Source = new BitmapImage(new Uri("Images/club.png", UriKind.RelativeOrAbsolute)); }
+            else if (wheel == 4) { imageBox.Source = new BitmapImage(new Uri("Images/heart.png", UriKind.RelativeOrAbsolute)); }
+            else if (wheel == 5) { imageBox.Source = new BitmapImage(new Uri("Images/diamond.png", UriKind.RelativeOrAbsolute)); }
+            else imageBox.Source = new BitmapImage(new Uri("Images/win.png", UriKind.RelativeOrAbsolute));
         }
 
         private void ImageWheel1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -119,6 +129,44 @@ namespace SlotGame
             }
         }
 
+        private void Calculate_Win(int slot1, int slot2, int slot3)
+        {
+            if ((slot1 == 1) || (slot2 == 1) || (slot3 == 1))
+            {
+                playerDollars -= 2;
+            }
+            else
+            {
+                for (int i = 2; i <= 6; i++)
+                {
+                    if ((slot1 == i) && (slot2 == i) && (slot3 == i))
+                    {
+                        playerDollars += (i * 10);
+                        imageWinLose.Source = new BitmapImage(new Uri("Images/winGame.png", UriKind.RelativeOrAbsolute));
+                    }
+                }
+                for (int i = 2; i <= 5; i++)
+                {
+                    if ((slot1 == i) && (slot2 == i) && (slot3 == 6))
+                    {
+                        playerDollars += (i * 2);
+                        imageWinLose.Source = new BitmapImage(new Uri("Images/winGame.png", UriKind.RelativeOrAbsolute));
+                    }
+                    else if ((slot1 == 6) && (slot2 == i) && (slot3 == i))
+                    {
+                        playerDollars += (i * 2);
+                        imageWinLose.Source = new BitmapImage(new Uri("Images/winGame.png", UriKind.RelativeOrAbsolute));
+                    }
+                    else if ((slot1 == i) && (slot2 == 6) && (slot3 == i))
+                    {
+                        playerDollars += (i * 2);
+                        imageWinLose.Source = new BitmapImage(new Uri("Images/winGame.png", UriKind.RelativeOrAbsolute));
+                    }
+                }
+            }
+            
+        }
+
         private void ImageWheel3_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (playerDollars >= 20)
@@ -135,6 +183,13 @@ namespace SlotGame
                     imageWheel3.Opacity = 1f;
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            BetterSlotMachine window2 = new BetterSlotMachine();
+            window2.Show();
+            Close();
         }
     }
 }

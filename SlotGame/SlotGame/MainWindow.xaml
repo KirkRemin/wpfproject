@@ -15,6 +15,7 @@
         <Image x:Name="imageWinLose" HorizontalAlignment="Left" Height="70" Margin="31,111,0,0" VerticalAlignment="Top" Width="372"/>
         <Button x:Name="buttonAddCash" Content="Add Cash" HorizontalAlignment="Left" Margin="31,386,0,0" VerticalAlignment="Top" Width="265" Click="ButtonAddCash_Click" Height="24"/>
         <Button x:Name="buttonPlay" Content="Play" HorizontalAlignment="Left" Margin="31,336,0,0" VerticalAlignment="Top" Width="265" Click="ButtonPlay_Click" Height="45" FontSize="16"/>
+        <Button Content="Play The Better Game" HorizontalAlignment="Left" Margin="566,356,0,0" VerticalAlignment="Top" Width="190" RenderTransformOrigin="0.5,0.5" Height="37" FontSize="18" Click="Button_Click"/>
 
     </Grid>
 </Window>
